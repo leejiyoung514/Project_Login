@@ -9,8 +9,9 @@
 </head>
 <body>
 <%  
-  String request.getAttribute("result"); 
+  String result=(String)request.getAttribute("result"); 
+  out.print("result");
 %>
-
+<%=result%>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package kr.co.bit.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -29,9 +30,10 @@ public class Controller extends HttpServlet {
 	}
 	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=euc-kr");
 		String url="./MVC/home.jsp";
 		String cmd=request.getParameter("cmd");
 		cmd=cmd==null?"":cmd;
@@ -44,28 +46,29 @@ public class Controller extends HttpServlet {
 			String id=request.getParameter("id");
 			String pw=request.getParameter("pw");
 			int result=dao.userCheck(id, pw);
-			request.setAttribute("member", result);	
-			
 			HttpSession session =request.getSession();
-			session.setAttribute("session_login_id", id);
-			request.setAttribute("check", result);
-			 
-			
+			System.out.println(result);
+            if(result==1) {
+	         session.setAttribute("session_login_id", id);
+            }else if(result==0) {
+             request.setAttribute("check", "아이디가 없습니다.");
+            }else if(result==-1) {
+             request.setAttribute("check", "비밀번호가 맞지 않습니다.");
+            }else {
+             request.setAttribute("check", "데이터베이스 오류입니다.");	
+            }
          //로그아웃페이지					
 		}else if(cmd.equals("session_logout")){
-			
-		
+			url="./MVC/logout.jsp";
 		//회원가입페이지
 	    }else if(cmd.equals("joinVeiw")) {
 			url="./MVC/join.jsp";
-			
 		//회원등록페이지에서 출력해봄	
 		}else if(cmd.equals("regist")) {
 			String id=request.getParameter("id");
 			String name=request.getParameter("name");
 			String nickName=request.getParameter("nickName");
 			String pw=request.getParameter("pw");
-			
 			MemberVO vo=new MemberVO();
 			vo.setId(id);
 			vo.setName(name);
@@ -73,25 +76,36 @@ public class Controller extends HttpServlet {
             vo.setPw(pw);
             /*  list.add(vo);
             req.setAttribute("message", list);*/
-            
             MemberDAO dao=new MemberDAO();
             boolean flag=dao.insert(vo);
             url="./MVC/list.jsp";
             request.setAttribute("result",flag?"success":"fail");
-       
-         //아이디확인 페이지    
-		}else if(cmd.equals("ViewIdCheck")){
+         //아이디확인 페이지  
+        /* 	}else if(cmd.equals("confirmId")){
+			url="./MVC/id_check.jsp"; */         
+            
+	/*	}else if(cmd.equals("confirmId")){
 			url="./MVC/id_check.jsp";
-		
+			MemberVO vo=null;
+			MemberDAO dao=null;
+			String id=request.getParameter("id");
+			int result=dao.confirmId(id);
+			String message="";
+			if(result==-1) { //이미 같은 아이디 있음(사용불가능)
+				message="false";
+			}else {//같은 아이디 없음(사용가능)
+				message="true";
+			}
+			request.setAttribute("message", message);
+			*/
 		//아이디비밀번호 찾는 페이지
 	    }else if(cmd.equals("find_id_pw")) {
 			url="./MVC/find_id_pw.jsp";
-		
 		//회원정보 수정 페이지 	
 		}else if(cmd.equals("member_info")) {
 			url="./MVC/member_info.jsp";
 		}
 		RequestDispatcher rd=request.getRequestDispatcher(url);
-		rd.forward(request, resp);	
+		rd.forward(request, response);	
 	}
 }
