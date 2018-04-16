@@ -4,7 +4,7 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	MemberDAO dao = new MemberDAO();
-	String message = "";
+	//String message = "";
 	String id = request.getParameter("id");
 	int result = dao.confirmId(id);
 	if (result == 1) { //이미 같은 아이디 있음(사용불가능)

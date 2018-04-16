@@ -8,8 +8,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-<link rel="stylesheet" href="./buttons.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
 
@@ -84,6 +82,7 @@ body {
 	
 	<!--인증된 사용자  --> 
 	<%}else{%> 
+	  
 	<form action="./pageController?cmd=session_logout" method="post">
 		 <div>
             <b><%=id%></b>님이 로그인 하셨습니다.<br>

@@ -77,7 +77,7 @@ public class MemberDAO {
 
 	// 등록페이지에서 idCheck 체크 기능
 	public int confirmId(String id) { // 폼의 파라미터값 사용자가 원하는 아이디
-		int x = -1;
+		int x = 0;
 		ConnectionManager mgr = new ConnectionManager();
 		Connection con = mgr.getConnection();
 		PreparedStatement pstmt = null;
@@ -98,6 +98,30 @@ public class MemberDAO {
 			mgr.connectionClose(con, pstmt, rs);
 		}
 
+		return x;
+	}
+
+	public int confirmNickName(String nickName) {
+		int x = 0;
+		ConnectionManager mgr = new ConnectionManager();
+		Connection con = mgr.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			String sql = "select * from join_list Where nickName=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, nickName);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				x = 1; // 같은 닉네임 있음 (사용불가)
+			else
+				x = 0; // 닉네임 없음 (사용가능)
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			mgr.connectionClose(con, pstmt, rs);
+		}
 		return x;
 	}
 

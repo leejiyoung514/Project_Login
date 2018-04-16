@@ -42,30 +42,30 @@ span {
 }
 </style>
 <script type="text/javascript">
-
 	function confirmId_Ajax() {
 		var id = document.getElementById("id").value;
-		var server_page = "./MVC/id_check.jsp"; /* "./pageController?cmd=confirmId"; */
-		//--
+		//alert(id);
+		var server_page = "./MVC/id_check.jsp";
+		//alert(server_page);
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
-		//--
 			if (this.readyState == 4 && this.status == 200) {
 				var result = this.responseText;
+				//alert(result);
 				if (result == "false") {
 					document.getElementById("id_check").innerHTML = "사용할 수 없는 아이디 입니다";
 				} else if(result == "true"){
 					idCheck(id);
 				}
-			} else if (this.readyState == 4 && this.status != 200) {
+			   }else if (this.readyState == 4 && this.status != 200) {
 				alert("error");
-			}	
-		}
+			     }	
+		      }
 		data = "id=" + id;
 		xhr.open("POST", server_page, true);
 		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		xhr.send(data);
-	}
+    }
 
 	function idCheck(val) {
 		if (val == "") {
@@ -83,9 +83,30 @@ span {
 			document.getElementById("name_check").innerHTML = "";
 		}
 	}
-
-	function nicknameCheck() {
+	
+	function confirmNickName_Ajax(){
 		var nickName = document.getElementById("nickName").value;
+		var server_page="./MVC/nickname_check.jsp";
+		var xhr=new XMLHttpRequest();
+		xhr.onreadystatechange=function(){
+			if(this.readyState == 4 && this.status == 200){
+				var result = this.responseText;
+				if(result == "false"){
+					document.getElementById("nickName_check").innerHTML="사용할 수 없는 닉네임입니다.";
+				}else if(result == "true"){
+					nicknameCheck(nickName);
+				}
+			 }else if(this.readyState == 4 && this.status != 200){
+				alert("error");
+			 }
+	    }
+		data="nickName="+nickName;
+		xhr.open("POST", server_page, true);
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhr.send(data);	
+	}	
+	
+	function nicknameCheck(nickName) {
 		if (nickName == "") {
 			document.getElementById("nickName_check").innerHTML = "닉네임을 입력해주세요!";
 		} else {
@@ -127,7 +148,7 @@ span {
 		</div>
 		<div>
 			<input type="text" name="nickName" id="nickName"
-				onblur="nicknameCheck()" placeholder="닉네임" size="30"> <span
+				onblur="confirmNickName_Ajax()" placeholder="닉네임" size="30"> <span
 				id="nickName_check"></span>
 		</div>
 		<div>

@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import kr.co.bit.dao.MemberDAO;
 import kr.co.bit.vo.MemberVO;
 
-
 public class Controller extends HttpServlet {
      private ArrayList<MemberVO>list;
 	@Override
@@ -80,24 +79,6 @@ public class Controller extends HttpServlet {
             boolean flag=dao.insert(vo);
             url="./MVC/list.jsp";
             request.setAttribute("result",flag?"success":"fail");
-         //아이디확인 페이지  
-        /* 	}else if(cmd.equals("confirmId")){
-			url="./MVC/id_check.jsp"; */         
-            
-	/*	}else if(cmd.equals("confirmId")){
-			url="./MVC/id_check.jsp";
-			MemberVO vo=null;
-			MemberDAO dao=null;
-			String id=request.getParameter("id");
-			int result=dao.confirmId(id);
-			String message="";
-			if(result==-1) { //이미 같은 아이디 있음(사용불가능)
-				message="false";
-			}else {//같은 아이디 없음(사용가능)
-				message="true";
-			}
-			request.setAttribute("message", message);
-			*/
 		//아이디비밀번호 찾는 페이지
 	    }else if(cmd.equals("find_id_pw")) {
 			url="./MVC/find_id_pw.jsp";
